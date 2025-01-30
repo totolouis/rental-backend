@@ -20,11 +20,17 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
 import com.nimbusds.jose.jwk.source.ImmutableSecret;
+import com.openclassrooms.service.CustomUserDetailsService;
 
 @Configuration
 public class SpringSecurityConfig {
 
 	private String jwtKey = "04NFj2KQB0FzrdKdbjRn4y4mSKaTXzR2";
+	private CustomUserDetailsService userDetailsService;
+
+	public SpringSecurityConfig(CustomUserDetailsService customUserDetailsService){
+		this.userDetailsService = customUserDetailsService;
+	}
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -44,13 +50,6 @@ public class SpringSecurityConfig {
 	public JwtDecoder jwtDecoder() {
 		SecretKeySpec secretKey = new SecretKeySpec(this.jwtKey.getBytes(), 0, this.jwtKey.getBytes().length, "RSA");
 		return NimbusJwtDecoder.withSecretKey(secretKey).macAlgorithm(MacAlgorithm.HS256).build();
-	}
-
-	@Bean
-	public UserDetailsService users() {
-		UserDetails user = User.builder().username("user").password(passwordEncoder().encode("password")).roles("USER")
-				.build();
-		return new InMemoryUserDetailsManager(user);
 	}
 
 	@Bean

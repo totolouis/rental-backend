@@ -1,4 +1,4 @@
-package com.openclassrooms.services;
+package com.openclassrooms.service;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
