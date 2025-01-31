@@ -19,7 +19,7 @@ import com.openclassrooms.model.Rental;
 import com.openclassrooms.service.RentalService;
 
 @RestController
-@RequestMapping("/rentals")
+@RequestMapping("/api/rentals")
 public class RentalController {
     private final RentalService rentalService;
 
@@ -38,9 +38,10 @@ public class RentalController {
         return rental.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    // TODO: in progress. je dois ajouter les param un a un et chercher le ownider id avec le token ou qql chose comme ca. je sais pas encore comment faire
     @PostMapping
-    public ResponseEntity<Rental> createRental(@RequestBody Rental rental) {
-        return ResponseEntity.ok(rentalService.createRental(rental));
+    public ResponseEntity<Rental> createRental(@RequestParam String name) {
+        return ResponseEntity.ok(rentalService.createRental(new Rental()));
     }
 
     @PutMapping("/{id}")
