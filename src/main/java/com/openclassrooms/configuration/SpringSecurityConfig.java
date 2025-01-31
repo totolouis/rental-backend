@@ -26,6 +26,7 @@ import com.openclassrooms.service.CustomUserDetailsService;
 public class SpringSecurityConfig {
 
 	private String jwtKey = "04NFj2KQB0FzrdKdbjRn4y4mSKaTXzR2";
+	//TODO: may not be useful anymore
 	private CustomUserDetailsService userDetailsService;
 
 	public SpringSecurityConfig(CustomUserDetailsService customUserDetailsService){
@@ -36,7 +37,8 @@ public class SpringSecurityConfig {
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		return http.csrf(csrf -> csrf.disable())
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-				.authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
+				// TODO: just do the authentificated for EVERYTHING except auth/**/
+				// .authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
 				.oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults()))
 				.httpBasic(Customizer.withDefaults()).build();
 	}

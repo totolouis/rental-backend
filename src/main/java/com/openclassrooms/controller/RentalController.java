@@ -19,7 +19,7 @@ import com.openclassrooms.model.Rental;
 import com.openclassrooms.service.RentalService;
 
 @RestController
-@RequestMapping("/api/rentals")
+@RequestMapping("/rentals")
 public class RentalController {
     private final RentalService rentalService;
 
