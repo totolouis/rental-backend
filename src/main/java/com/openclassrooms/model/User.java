@@ -6,14 +6,10 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Table(name = "users")
-@Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -31,4 +27,16 @@ public class User {
 
     @Column(nullable = true)
     private String password;
+
+    public String getEmail(){
+        return this.email;
+    }
+
+    public String getUsername(){
+        return this.username;
+    }
+
+    public String getPassword(){
+        return this.password;
+    }
 }

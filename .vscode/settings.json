@@ -1,3 +1,5 @@
 {
-    "java.compile.nullAnalysis.mode": "automatic"
+    "java.compile.nullAnalysis.mode": "automatic",
+    "java.jdt.ls.vmargs": "-javaagent:C:/Users/Louis/Downloads/lombok.jar",
+    "java.configuration.updateBuildConfiguration": "interactive"
 }

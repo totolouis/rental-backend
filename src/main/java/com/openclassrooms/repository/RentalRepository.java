@@ -9,5 +9,5 @@ import com.openclassrooms.model.Rental;
 
 @Repository
 public interface RentalRepository extends JpaRepository<Rental, Long> {
-    Optional<Rental> findById(String id);
+    Optional<Rental> findById(Long id);
 }

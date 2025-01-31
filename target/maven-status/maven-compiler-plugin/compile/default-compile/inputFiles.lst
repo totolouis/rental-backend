@@ -1,0 +1,12 @@
+C:\Users\Louis\Sources\Formation OpenClassroom Fullstack\backend\rental\src\main\java\com\openclassrooms\configuration\SpringSecurityConfig.java
+C:\Users\Louis\Sources\Formation OpenClassroom Fullstack\backend\rental\src\main\java\com\openclassrooms\controller\LoginController.java
+C:\Users\Louis\Sources\Formation OpenClassroom Fullstack\backend\rental\src\main\java\com\openclassrooms\controller\RentalController.java
+C:\Users\Louis\Sources\Formation OpenClassroom Fullstack\backend\rental\src\main\java\com\openclassrooms\controller\ResourceController.java
+C:\Users\Louis\Sources\Formation OpenClassroom Fullstack\backend\rental\src\main\java\com\openclassrooms\model\Rental.java
+C:\Users\Louis\Sources\Formation OpenClassroom Fullstack\backend\rental\src\main\java\com\openclassrooms\model\User.java
+C:\Users\Louis\Sources\Formation OpenClassroom Fullstack\backend\rental\src\main\java\com\openclassrooms\repository\RentalRepository.java
+C:\Users\Louis\Sources\Formation OpenClassroom Fullstack\backend\rental\src\main\java\com\openclassrooms\repository\UserRepository.java
+C:\Users\Louis\Sources\Formation OpenClassroom Fullstack\backend\rental\src\main\java\com\openclassrooms\service\CustomUserDetailsService.java
+C:\Users\Louis\Sources\Formation OpenClassroom Fullstack\backend\rental\src\main\java\com\openclassrooms\service\JWTService.java
+C:\Users\Louis\Sources\Formation OpenClassroom Fullstack\backend\rental\src\main\java\com\openclassrooms\service\RentalService.java
+C:\Users\Louis\Sources\Formation OpenClassroom Fullstack\backend\rental\src\main\java\com\openclassrooms\SpringSecurityAuthApplication.java

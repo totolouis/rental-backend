@@ -1,0 +1,12 @@
+com\openclassrooms\controller\RentalController.class
+com\openclassrooms\repository\RentalRepository.class
+com\openclassrooms\service\RentalService.class
+com\openclassrooms\service\CustomUserDetailsService.class
+com\openclassrooms\model\Rental.class
+com\openclassrooms\controller\LoginController.class
+com\openclassrooms\configuration\SpringSecurityConfig.class
+com\openclassrooms\model\User.class
+com\openclassrooms\controller\ResourceController.class
+com\openclassrooms\SpringSecurityAuthApplication.class
+com\openclassrooms\repository\UserRepository.class
+com\openclassrooms\service\JWTService.class
