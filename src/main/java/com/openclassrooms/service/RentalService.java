@@ -17,16 +17,15 @@ public class RentalService {
     }
 
     public List<Rental> getAllRentals() {
-        return rentalRepository.findAll();
+        return (List<Rental>) rentalRepository.findAll();
     }
 
     public Optional<Rental> getRentalById(Long id) {
         return rentalRepository.findById(id);
     }
 
-    // TODO: may be not used flush. Read more about it.
     public Rental createRental(Rental rental) {
-        return rentalRepository.saveAndFlush(rental);
+        return rentalRepository.save(rental);
     }
 
     public Optional<Rental> updateRental(Long id, Rental updatedRental) {
@@ -36,7 +35,7 @@ public class RentalService {
             existingRental.setPrice(updatedRental.getPrice());
             existingRental.setPicture(updatedRental.getPicture());
             existingRental.setDescription(updatedRental.getDescription());
-            return rentalRepository.saveAndFlush(existingRental);
+            return rentalRepository.save(existingRental);
         });
     }
 }

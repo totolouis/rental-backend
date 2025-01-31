@@ -2,16 +2,18 @@ package com.openclassrooms.controller;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.openclassrooms.service.JWTService;
 
 @RestController
-public class LoginController {
+@RequestMapping("/auth")
+public class AuthController {
 
 	private JWTService jwtService;
 
-	public LoginController(JWTService jwtService) {
+	public AuthController(JWTService jwtService) {
 		this.jwtService = jwtService;
 	}
 

@@ -2,6 +2,8 @@ package com.openclassrooms.controller;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,13 +12,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.openclassrooms.model.Rental;
 import com.openclassrooms.service.RentalService;
 
 @RestController
-@RequestMapping("/rentals")
+@RequestMapping("/api/rentals")
 public class RentalController {
     private final RentalService rentalService;
 
@@ -26,7 +29,7 @@ public class RentalController {
 
     @GetMapping
     public ResponseEntity<List<Rental>> getAllRentals() {
-        return ResponseEntity.ok(rentalService.getAllRentals());
+    return ResponseEntity.ok(rentalService.getAllRentals());
     }
 
     @GetMapping("/{id}")

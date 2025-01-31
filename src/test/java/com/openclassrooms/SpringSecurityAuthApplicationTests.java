@@ -6,13 +6,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.openclassrooms.controller.LoginController;
+import com.openclassrooms.controller.AuthController;
 
 @SpringBootTest
 class SpringSecurityAuthApplicationTests {
 	
 	@Autowired
-	private LoginController loginController;
+	private AuthController loginController;
 
 	@Test
 	void contextLoads() {
