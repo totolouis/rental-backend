@@ -41,7 +41,13 @@ public class Rental {
     @Column(nullable = true)
     private String description;
 
+    @Column(nullable = false, name= "owner_id")
+    private Integer ownerId;
+    
+    @Column(nullable = true, name= "created_at")
     private LocalDateTime createdAt;
+    
+    @Column(nullable = true, name= "updated_at")
     private LocalDateTime updatedAt;
 
     @PrePersist

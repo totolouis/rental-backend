@@ -39,6 +39,9 @@ public class SpringSecurityConfig {
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				// TODO: just do the authentificated for EVERYTHING except auth/**/
 				// .authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
+				// TODO: this does not WORK. FIX IT. Need to add something after the requestMatchers
+				.authorizeHttpRequests(auth -> auth.requestMatchers("/api/rentals/**").authenticated())
+				.authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
 				.oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults()))
 				.httpBasic(Customizer.withDefaults()).build();
 	}
