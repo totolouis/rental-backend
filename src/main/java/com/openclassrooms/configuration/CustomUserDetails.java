@@ -4,6 +4,7 @@ import com.openclassrooms.model.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
@@ -55,6 +56,14 @@ public class CustomUserDetails implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public LocalDateTime getCreatedDateTime() {
+        return user.getCreatedAt();
+    }
+
+    public LocalDateTime getUpdatedDateTime() {
+        return user.getUpdatedAt();
     }
 }
 
