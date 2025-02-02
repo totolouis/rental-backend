@@ -28,7 +28,7 @@ public class AuthController {
 	private final CustomUserDetailsService userService; // private final AuthenticationManager authenticationManager;
 	// private final CustomUserDetailsService customUserDetailsService;
 	// private final JwtUtil jwtUtil;
-
+	
 	public AuthController(JWTService jwtService, CustomUserDetailsService userService) {
 		this.jwtService = jwtService;
 		this.userService = userService;
@@ -59,14 +59,26 @@ public class AuthController {
 		}
 	}
 
+	public static class AuthSuccess {
+		private String token;
+
+		public String getToken() {
+			return token;
+		}
+
+		public void setToken(String token){
+			this.token = token;
+		}
+	}
+
+	// TODO: better handling of the AuthSuccess dto. A Dto is not neccesary and the return is dirty
+	// ! Redo
 	@PostMapping("/login")
-	public String getToken(@RequestBody LoginRequest loginRequest) {
-		// Here you can authenticate the user using loginRequest.getEmail() and
-		// loginRequest.getPassword()
-		// If authentication is successful, generate and return the token
-		// For now, assume authentication is handled correctly
+	public AuthSuccess getToken(@RequestBody LoginRequest loginRequest) {
 		String token = jwtService.generateToken(loginRequest.getEmail(), loginRequest.getPassword());
-		return token;
+		AuthSuccess authSuccess = new AuthSuccess();
+		authSuccess.setToken(token);
+		return authSuccess;
 	}
 
 	@GetMapping("/me")
@@ -75,7 +87,7 @@ public class AuthController {
 
 		// Le front y accede de maniere bizarre. Il faut que je regarde pour mieux le faire car la dans letat cel ane fonctionne pas
 		if (!(authentication.getPrincipal() instanceof Jwt)) {
-			throw new RuntimeException("Unsupported principal type: " + authentication.getPrincipal().getClass());
+			return ResponseEntity.internalServerError().build();
 		}
 		Jwt jwt = (Jwt) authentication.getPrincipal();
 		Integer id = Math.toIntExact(jwt.getClaim("id"));
