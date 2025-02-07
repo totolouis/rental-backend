@@ -1,5 +1,7 @@
 package com.openclassrooms.service;
 
+import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,13 +31,24 @@ public class RentalService {
     }
 
     public Optional<Rental> updateRental(Long id, Rental updatedRental) {
+        if (!id.equals(updatedRental.getId())) {
+            return Optional.empty();
+        }
+    
         return rentalRepository.findById(id).map(existingRental -> {
-            existingRental.setName(updatedRental.getName());
-            existingRental.setSurface(updatedRental.getSurface());
-            existingRental.setPrice(updatedRental.getPrice());
-            existingRental.setPicture(updatedRental.getPicture());
-            existingRental.setDescription(updatedRental.getDescription());
+            if (!existingRental.getOwnerId().equals(updatedRental.getOwnerId())) {
+                return null;
+            }
+    
+            if (updatedRental.getName() != null) existingRental.setName(updatedRental.getName());
+            if (updatedRental.getSurface() != null) existingRental.setSurface(updatedRental.getSurface());
+            if (updatedRental.getPrice() != null) existingRental.setPrice(updatedRental.getPrice());
+            if (updatedRental.getPicture() != null) existingRental.setPicture(updatedRental.getPicture());
+            if (updatedRental.getDescription() != null) existingRental.setDescription(updatedRental.getDescription());
+    
+            existingRental.setUpdatedAt(LocalDateTime.now());
             return rentalRepository.save(existingRental);
         });
     }
+    
 }

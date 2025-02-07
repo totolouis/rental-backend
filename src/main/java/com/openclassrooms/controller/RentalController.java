@@ -44,26 +44,32 @@ public class RentalController {
         return rental.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    // TODO: in progress. je dois ajouter les param un a un et chercher le ownider
-    // id avec le token ou qql chose comme ca. je sais pas encore comment faire
     @PostMapping
     public ResponseEntity<Rental> createRental(@RequestParam String name, @RequestParam Double surface,
             @RequestParam Double price, @RequestParam String picture, @RequestParam String description) {
-                       
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Jwt jwt = (Jwt) authentication.getPrincipal();
 
         Integer ownerId = Math.toIntExact(jwt.getClaim("id"));
-        
+
         LocalDateTime now = LocalDateTime.now();
-        // I dont like the fact to give a null just to let the db use it. The constructor should be clearer, like no need to put the
+        // I dont like the fact to give a null just to let the db use it. The
+        // constructor should be clearer, like no need to put the
         return ResponseEntity.ok(rentalService.createRental(
                 new Rental(null, name, surface, price, picture, description, ownerId, now, now)));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Rental> updateRental(@PathVariable Long id, @RequestBody Rental updatedRental) {
-        Optional<Rental> rental = rentalService.updateRental(id, updatedRental);
+    public ResponseEntity<Rental> updateRental(@PathVariable Long id, @RequestParam String name, @RequestParam Double surface,
+    @RequestParam Double price, @RequestParam(required = false) String picture, @RequestParam String description) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Jwt jwt = (Jwt) authentication.getPrincipal();
+
+        Integer ownerId = Math.toIntExact(jwt.getClaim("id"));
+
+        Optional<Rental> rental = rentalService.updateRental(id, new Rental(id, name, surface, price, picture, description, ownerId, null, null));
         return rental.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
+
 }

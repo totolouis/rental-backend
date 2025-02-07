@@ -85,6 +85,10 @@ public class Rental {
         return description;
     }
 
+    public Integer getOwnerId(){
+        return ownerId;
+    }
+
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
