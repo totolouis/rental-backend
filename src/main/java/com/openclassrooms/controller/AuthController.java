@@ -114,10 +114,10 @@ public class AuthController {
 		CustomUserDetails user = userService.loadUserById(id);
 		Map<String, Object> userInfo = Map.of(
 				"id", user.getId(),
-				"username", user.getUsername(),
+				"name", user.getUsername(),
 				"email", user.getEmail(),
-				"createdAt", user.getCreatedDateTime(),
-				"updatedAt",user.getUpdatedDateTime());
+				"created_at", user.getCreatedDateTime(),
+				"updated_at",user.getUpdatedDateTime());
 		return ResponseEntity.ok(userInfo);
 	}
 
