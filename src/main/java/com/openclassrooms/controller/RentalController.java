@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.apache.catalina.connector.Response;
@@ -37,8 +38,8 @@ public class RentalController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Rental>> getAllRentals() {
-        return ResponseEntity.ok(rentalService.getAllRentals());
+    public ResponseEntity<?> getAllRentals() {
+        return ResponseEntity.ok(Map.of("rentals", rentalService.getAllRentals()));
     }
 
     @GetMapping("/{id}")
