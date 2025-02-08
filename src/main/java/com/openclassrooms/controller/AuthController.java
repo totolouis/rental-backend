@@ -106,8 +106,6 @@ public class AuthController {
 	@GetMapping("/me")
 	public ResponseEntity<?> getCurrentUser() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-		// Le front y accede de maniere bizarre. Il faut que je regarde pour mieux le faire car la dans letat cel ane fonctionne pas
 		if (!(authentication.getPrincipal() instanceof Jwt)) {
 			return ResponseEntity.internalServerError().build();
 		}
@@ -118,10 +116,8 @@ public class AuthController {
 				"id", user.getId(),
 				"username", user.getUsername(),
 				"email", user.getEmail(),
-				// TODO: remove this. its bc old user created manually. Have to do the register
-				// yet.
-				"createdAt", (user.getCreatedDateTime() != null) ? user.getCreatedDateTime() : LocalDateTime.now(),
-				"updatedAt", (user.getUpdatedDateTime() != null) ? user.getUpdatedDateTime() : LocalDateTime.now());
+				"createdAt", user.getCreatedDateTime(),
+				"updatedAt",user.getUpdatedDateTime());
 		return ResponseEntity.ok(userInfo);
 	}
 
