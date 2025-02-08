@@ -31,10 +31,6 @@ public class RentalService {
     }
 
     public Optional<Rental> updateRental(Long id, Rental updatedRental) {
-        if (!id.equals(updatedRental.getId())) {
-            return Optional.empty();
-        }
-    
         return rentalRepository.findById(id).map(existingRental -> {
             if (!existingRental.getOwnerId().equals(updatedRental.getOwnerId())) {
                 return null;
