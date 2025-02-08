@@ -37,11 +37,14 @@ public class SpringSecurityConfig {
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		return http.csrf(csrf -> csrf.disable())
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-				// TODO: just do the authentificated for EVERYTHING except auth/**/
-				// .authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
-				// TODO: this does not WORK. FIX IT. Need to add something after the requestMatchers
-				.authorizeHttpRequests(auth -> auth.requestMatchers("/api/rentals/**").authenticated())
-				.authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
+				.authorizeHttpRequests(auth -> auth.requestMatchers(
+					"/api/auth/login", 
+					"/api/auth/register")
+				.permitAll())
+				// TODO: check UsernamePasswordAuthentificationFilter how this works etc...
+				// This could pass a principal directly to the query/call in order to deal with ownerId etc.
+				// .addFilterBefore(null, null)
+				.authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
 				.oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults()))
 				.httpBasic(Customizer.withDefaults()).build();
 	}

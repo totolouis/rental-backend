@@ -24,6 +24,7 @@ import com.openclassrooms.repository.UserRepository;
 import com.openclassrooms.service.CustomUserDetailsService;
 import com.openclassrooms.service.JWTService;
 
+//TODO: swagger
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
