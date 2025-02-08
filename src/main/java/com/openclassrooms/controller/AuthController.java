@@ -135,7 +135,13 @@ public class AuthController {
 				null);
 		userRepository.save(newUser);
 
-		return ResponseEntity.status(HttpStatus.CREATED).body("User registered successfully.");
+		
+
+		String token = jwtService.generateToken(newUser.getEmail(), newUser.getPassword());
+		AuthSuccess authSuccess = new AuthSuccess();
+		authSuccess.setToken(token);
+
+		return ResponseEntity.status(HttpStatus.CREATED).body(authSuccess);
 	}
 	
 }
