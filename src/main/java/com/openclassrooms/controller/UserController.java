@@ -23,7 +23,7 @@ public class UserController {
     @GetMapping("/{userId}")
     public ResponseEntity<User> getUser(@PathVariable Long userId) {
         CustomUserDetails user = customUserDetailsService.loadUserById(Math.toIntExact(userId));
-        User userDTO = new User(user.getUsername(), user.getEmail());
+        User userDTO = new User(user.getId(), user.getUsername(), user.getEmail());
         return ResponseEntity.ok(userDTO);
     }
 

@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.openclassrooms.dto.RentalDTO;
 import com.openclassrooms.model.Rental;
 import com.openclassrooms.service.RentalService;
 
@@ -38,13 +40,16 @@ public class RentalController {
 
     @GetMapping
     public ResponseEntity<?> getAllRentals() {
-        return ResponseEntity.ok(Map.of("rentals", rentalService.getAllRentals()));
+        return ResponseEntity.ok(Map.of("rentals",rentalService.getAllRentals().stream()
+            .map(r -> new RentalDTO(r.getId(), r.getName(), r.getSurface(), r.getPrice(), r.getPicture(), r.getDescription(), r.getCreatedAt(), r.getUpdatedAt(), r.getOwnerId()))
+            .collect(Collectors.toList())));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Rental> getRentalById(@PathVariable Long id) {
+    public ResponseEntity<RentalDTO> getRentalById(@PathVariable Long id) {
         Optional<Rental> rental = rentalService.getRentalById(id);
-        return rental.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+        return rental.map(r -> ResponseEntity.ok(new RentalDTO(r.getId(), r.getName(), r.getSurface(), r.getPrice(), r.getPicture(), r.getDescription(), r.getCreatedAt(), r.getUpdatedAt(), r.getOwnerId())))
+                  .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping
@@ -64,19 +69,19 @@ public class RentalController {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Picture is missing");
             }
 
-            // Save rental with file path in DB
             Rental rental = Rental.builder()
                     .name(name)
                     .surface(surface)
                     .price(price)
                     .description(description)
                     .ownerId(ownerId)
-                    .picture(filePath) // Save file path
+                    .picture(filePath)
                     .build();
 
             rentalService.createRental(rental);
             saveFile(Paths.get(filePath), picture.getBytes());
-            return ResponseEntity.ok(rental);
+
+            return ResponseEntity.ok(new RentalDTO(name, surface, price, filePath, description));
         } catch (IOException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error saving file.");
         }
@@ -101,7 +106,7 @@ public class RentalController {
         Optional<Rental> updatedRental = rentalService.updateRental(id, rental);
         if (updatedRental.isPresent()) {
 
-            return ResponseEntity.ok(updatedRental);
+            return ResponseEntity.ok(new RentalDTO(name, surface, price, name, description));
         } else {
             return ResponseEntity.notFound().build();
         }

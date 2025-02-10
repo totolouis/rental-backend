@@ -60,7 +60,7 @@ public class AuthController {
 		Integer id = Math.toIntExact(jwt.getClaim("id"));
 		CustomUserDetails user = userService.loadUserById(id);
 
-		UserMe userInfo = new UserMe(user.getUsername(), user.getEmail(), user.getCreatedDateTime(), user.getUpdatedDateTime());
+		UserMe userInfo = new UserMe(id, user.getUsername(), user.getEmail(), user.getCreatedDateTime(), user.getUpdatedDateTime());
 
 		return ResponseEntity.ok(userInfo);
 	}

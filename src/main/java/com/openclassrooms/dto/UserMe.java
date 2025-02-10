@@ -4,16 +4,22 @@ import java.time.LocalDateTime;
 
 public class UserMe {
 
+    private Integer id;
         private String name;
         private String email;
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
     
-        public UserMe(String name, String email, LocalDateTime createdAt, LocalDateTime updatedAt){
+        public UserMe(Integer id, String name, String email, LocalDateTime createdAt, LocalDateTime updatedAt){
+           this.id = id;
             this.name = name;
             this.email = email;
             this.createdAt = createdAt;
             this.updatedAt = updatedAt;
+        }
+
+        public Integer getId(){
+            return id;
         }
     
         public String getName(){
