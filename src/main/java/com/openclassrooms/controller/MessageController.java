@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.openclassrooms.dto.CreateMessageRequestDTO;
+import com.openclassrooms.dto.MessageSent;
 import com.openclassrooms.model.Message;
 import com.openclassrooms.service.MessageService;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,14 +30,14 @@ public class MessageController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createMessag(@RequestBody CreateMessageRequestDTO createMessageRequestDTO) {
+    public ResponseEntity<MessageSent> createMessag(@RequestBody CreateMessageRequestDTO createMessageRequestDTO) {
         Message newMessage = Message.builder()
         .message(createMessageRequestDTO.message)
-        .userId(createMessageRequestDTO.userId)
-        .rentalId(createMessageRequestDTO.rentalId)
+        .userId(createMessageRequestDTO.user_id)
+        .rentalId(createMessageRequestDTO.rental_id)
         .build();
         messageService.createMessage(newMessage);
-        return ResponseEntity.ok(newMessage);        
+        return ResponseEntity.ok(new MessageSent(createMessageRequestDTO.message));        
     }
     
 }
