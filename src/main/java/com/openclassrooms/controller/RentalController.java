@@ -30,7 +30,9 @@ import com.openclassrooms.service.RentalService;
 @RestController
 @RequestMapping("/api/rentals")
 public class RentalController {
-    private static final String UPLOAD_DIR = "src/main/resources/static/pictures/";
+    private static final String UPLOAD_DIR = "src\\frontend\\src\\assets\\";
+    private static final String FRONTEND_DIR = "assets\\";
+
     private final RentalService rentalService;
 
     public RentalController(RentalService rentalService) {
@@ -61,7 +63,7 @@ public class RentalController {
 
         try {
             String filePath = this.getFilepathFromMultipartFile(picture);
-            if(filePath == null) {
+            if (filePath == null) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Picture is missing");
             }
 
@@ -86,45 +88,37 @@ public class RentalController {
     @PutMapping("/{id}")
     public ResponseEntity<?> updateRental(@PathVariable Long id, @RequestParam String name,
             @RequestParam Double surface,
-            @RequestParam Double price, @RequestParam(required = false) MultipartFile picture,
+            @RequestParam Double price,
             @RequestParam String description) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Jwt jwt = (Jwt) authentication.getPrincipal();
 
         Integer ownerId = Math.toIntExact(jwt.getClaim("id"));
+        Rental rental = Rental.builder()
+                .name(name)
+                .surface(surface)
+                .price(price)
+                .description(description)
+                .ownerId(ownerId)
+                .build();
+        Optional<Rental> updatedRental = rentalService.updateRental(id, rental);
+        if (updatedRental.isPresent()) {
 
-        try {
-            String filePath = this.getFilepathFromMultipartFile(picture);
-            Rental rental = Rental.builder()
-                    .name(name)
-                    .surface(surface)
-                    .price(price)
-                    .description(description)
-                    .ownerId(ownerId)
-                    .picture(filePath) // Save file path
-                    .build();
-            Optional<Rental> updatedRental = rentalService.updateRental(id, rental);
-            if(updatedRental.isPresent()){
-                
-                saveFile(Paths.get(filePath), picture.getBytes());
-                return ResponseEntity.ok(updatedRental);
-            } else {
-                return ResponseEntity.notFound().build();
-            }
-        } catch (IOException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error saving file.");
+            return ResponseEntity.ok(updatedRental);
+        } else {
+            return ResponseEntity.notFound().build();
         }
     }
 
     private String getFilepathFromMultipartFile(MultipartFile file) throws IOException {
         try {
-            if(file.getOriginalFilename().isEmpty()){
-                return null; 
+            if (file.getOriginalFilename().isEmpty()) {
+                return null;
             }
             Files.createDirectories(Paths.get(UPLOAD_DIR));
 
             String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
-            String filePath = UPLOAD_DIR + fileName;
+            String filePath = FRONTEND_DIR + fileName;
             return filePath;
         } catch (IOException e) {
             throw new IOException("Error getting filePath.");
@@ -133,8 +127,8 @@ public class RentalController {
 
     private void saveFile(Path filePath, byte[] content) throws IOException {
         try {
-        Files.write(filePath, content);        } 
-        catch (IOException e) {
+            Files.write(Paths.get(UPLOAD_DIR, filePath.getFileName().toString()), content);
+        } catch (IOException e) {
             throw new IOException("Error saving file.");
         }
     }
