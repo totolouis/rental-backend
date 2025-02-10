@@ -18,6 +18,7 @@ import com.openclassrooms.configuration.CustomUserDetails;
 import com.openclassrooms.dto.AuthSuccess;
 import com.openclassrooms.dto.LoginRequest;
 import com.openclassrooms.dto.RegisterRequest;
+import com.openclassrooms.dto.UserMe;
 import com.openclassrooms.model.User;
 import com.openclassrooms.repository.UserRepository;
 import com.openclassrooms.service.CustomUserDetailsService;
@@ -50,7 +51,7 @@ public class AuthController {
 	}
 
 	@GetMapping("/me")
-	public ResponseEntity<?> getCurrentUser() {
+	public ResponseEntity<UserMe> getCurrentUser() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (!(authentication.getPrincipal() instanceof Jwt)) {
 			return ResponseEntity.internalServerError().build();
@@ -58,12 +59,9 @@ public class AuthController {
 		Jwt jwt = (Jwt) authentication.getPrincipal();
 		Integer id = Math.toIntExact(jwt.getClaim("id"));
 		CustomUserDetails user = userService.loadUserById(id);
-		Map<String, Object> userInfo = Map.of(
-				"id", user.getId(),
-				"name", user.getUsername(),
-				"email", user.getEmail(),
-				"created_at", user.getCreatedDateTime(),
-				"updated_at", user.getUpdatedDateTime());
+
+		UserMe userInfo = new UserMe(user.getUsername(), user.getEmail(), user.getCreatedDateTime(), user.getUpdatedDateTime());
+
 		return ResponseEntity.ok(userInfo);
 	}
 
