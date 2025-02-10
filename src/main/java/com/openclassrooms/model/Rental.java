@@ -61,7 +61,6 @@ public class Rental {
         this.updatedAt = LocalDateTime.now();
     }
 
-    // Getters for each field
     public Long getId() {
         return id;
     }
@@ -98,7 +97,6 @@ public class Rental {
         return updatedAt;
     }
 
-    // Setters for each field
     public void setId(Long id) {
         this.id = id;
     }

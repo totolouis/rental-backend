@@ -2,12 +2,10 @@ package com.openclassrooms.service;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.Map;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
 import org.springframework.security.oauth2.jwt.JwsHeader;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
@@ -30,19 +28,15 @@ public class JWTService {
 
         public String generateToken(Authentication authentication) {
                 Instant now = Instant.now();
-                // Map<String, Object> claims = new HashMap<>();
-                // claims.put("id", userDe)
-                // Extract CustomUserDetails from Authentication
                 CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 
-                // Add custom claims
                 JwtClaimsSet claims = JwtClaimsSet.builder()
                                 .issuer("self")
                                 .issuedAt(now)
                                 .expiresAt(now.plus(1, ChronoUnit.DAYS))
-                                .subject(userDetails.getEmail()) // typically the email
-                                .claim("id", userDetails.getId()) // custom claim for user ID
-                                .claim("role", "ROLE_USER") // custom claim for role
+                                .subject(userDetails.getEmail()) 
+                                .claim("id", userDetails.getId())
+                                .claim("role", "ROLE_USER")
                                 .build();
                 JwtEncoderParameters jwtEncoderParameters = JwtEncoderParameters
                                 .from(JwsHeader.with(MacAlgorithm.HS256).build(), claims);
@@ -52,7 +46,6 @@ public class JWTService {
         public String generateToken(String email, String password) {
                 UserDetails user = this.userDetailsService.loadUserByEmail(email);
                 Authentication authentication = new UsernamePasswordAuthenticationToken(user, password);
-                // Generate the token based on the authentication object
                 return generateToken(authentication);
 
         }
