@@ -1,9 +1,9 @@
 package com.openclassrooms.dto;
 
-public class MessageSent {
+public class MessageSentDTO {
     private String message;
 
-    public MessageSent(String message){
+    public MessageSentDTO(String message){
         this.message = message;
     }
 

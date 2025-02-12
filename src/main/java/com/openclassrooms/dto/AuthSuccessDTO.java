@@ -1,6 +1,6 @@
 package com.openclassrooms.dto;
 
-public class AuthSuccess {
+public class AuthSuccessDTO {
     private String token;
 
     public String getToken() {

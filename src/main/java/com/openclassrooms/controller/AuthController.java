@@ -1,7 +1,5 @@
 package com.openclassrooms.controller;
 
-import java.util.Map;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -15,16 +13,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.openclassrooms.configuration.CustomUserDetails;
-import com.openclassrooms.dto.AuthSuccess;
-import com.openclassrooms.dto.LoginRequest;
-import com.openclassrooms.dto.RegisterRequest;
-import com.openclassrooms.dto.UserMe;
+import com.openclassrooms.dto.AuthSuccessDTO;
+import com.openclassrooms.dto.LoginRequestDTO;
+import com.openclassrooms.dto.RegisterRequestDTO;
+import com.openclassrooms.dto.UserMeDTO;
 import com.openclassrooms.model.User;
 import com.openclassrooms.repository.UserRepository;
 import com.openclassrooms.service.CustomUserDetailsService;
 import com.openclassrooms.service.JWTService;
 
-//TODO: swagger
+import io.swagger.v3.oas.annotations.Operation;
+
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
@@ -42,16 +41,18 @@ public class AuthController {
 		this.passwordEncoder = passwordEncoder;
 	}
 
+	@Operation(summary = "Authenticate user and return token")
 	@PostMapping("/login")
-	public AuthSuccess getToken(@RequestBody LoginRequest loginRequest) {
+	public AuthSuccessDTO getToken(@RequestBody LoginRequestDTO loginRequest) {
 		String token = jwtService.generateToken(loginRequest.getEmail(), loginRequest.getPassword());
-		AuthSuccess authSuccess = new AuthSuccess();
+		AuthSuccessDTO authSuccess = new AuthSuccessDTO();
 		authSuccess.setToken(token);
 		return authSuccess;
 	}
 
+	@Operation(summary = "Return authenticated user information")
 	@GetMapping("/me")
-	public ResponseEntity<UserMe> getCurrentUser() {
+	public ResponseEntity<UserMeDTO> getCurrentUser() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (!(authentication.getPrincipal() instanceof Jwt)) {
 			return ResponseEntity.internalServerError().build();
@@ -60,26 +61,38 @@ public class AuthController {
 		Integer id = Math.toIntExact(jwt.getClaim("id"));
 		CustomUserDetails user = userService.loadUserById(id);
 
-		UserMe userInfo = new UserMe(id, user.getUsername(), user.getEmail(), user.getCreatedDateTime(), user.getUpdatedDateTime());
+		UserMeDTO userInfo = new UserMeDTO(id, user.getUsername(), user.getEmail(), user.getCreatedDateTime(),
+				user.getUpdatedDateTime());
 
 		return ResponseEntity.ok(userInfo);
 	}
 
+	@Operation(summary = "Register a new user")
 	@PostMapping("/register")
-	public ResponseEntity<?> registerUser(@RequestBody RegisterRequest registerRequest) {
+	public ResponseEntity<?> registerUser(@RequestBody RegisterRequestDTO registerRequest) {
 		if (this.userRepository.findByEmail(registerRequest.getEmail()).isPresent()) {
 			return ResponseEntity.status(HttpStatus.CONFLICT).body("User already exists.");
 		}
+
+		User newUser = createUser(registerRequest);
+		AuthSuccessDTO authSuccess = createToken(newUser);
+
+		return ResponseEntity.status(HttpStatus.CREATED).body(authSuccess);
+	}
+
+	private User createUser(RegisterRequestDTO registerRequest) {
 		String encryptedPassword = this.passwordEncoder.encode(registerRequest.getPassword());
 		User newUser = new User(null, registerRequest.getEmail(), registerRequest.getName(), encryptedPassword, null,
 				null);
 		userRepository.save(newUser);
+		return newUser;
+	}
 
+	private AuthSuccessDTO createToken(User newUser) {
 		String token = jwtService.generateToken(newUser.getEmail(), newUser.getPassword());
-		AuthSuccess authSuccess = new AuthSuccess();
+		AuthSuccessDTO authSuccess = new AuthSuccessDTO();
 		authSuccess.setToken(token);
-
-		return ResponseEntity.status(HttpStatus.CREATED).body(authSuccess);
+		return authSuccess;
 	}
 
 }

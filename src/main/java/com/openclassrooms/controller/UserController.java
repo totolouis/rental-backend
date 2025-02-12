@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.openclassrooms.configuration.CustomUserDetails;
-import com.openclassrooms.dto.User;
+import com.openclassrooms.dto.UserDTO;
 import com.openclassrooms.service.CustomUserDetailsService;
 
 @RestController
@@ -21,9 +21,9 @@ public class UserController {
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity<User> getUser(@PathVariable Long userId) {
+    public ResponseEntity<UserDTO> getUser(@PathVariable Long userId) {
         CustomUserDetails user = customUserDetailsService.loadUserById(Math.toIntExact(userId));
-        User userDTO = new User(user.getId(), user.getUsername(), user.getEmail());
+        UserDTO userDTO = new UserDTO(user.getId(), user.getUsername(), user.getEmail());
         return ResponseEntity.ok(userDTO);
     }
 

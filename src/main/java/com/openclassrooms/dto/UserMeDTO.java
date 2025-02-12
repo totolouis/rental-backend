@@ -2,7 +2,7 @@ package com.openclassrooms.dto;
 
 import java.time.LocalDateTime;
 
-public class UserMe {
+public class UserMeDTO {
 
     private Integer id;
         private String name;
@@ -10,7 +10,7 @@ public class UserMe {
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
     
-        public UserMe(Integer id, String name, String email, LocalDateTime createdAt, LocalDateTime updatedAt){
+        public UserMeDTO(Integer id, String name, String email, LocalDateTime createdAt, LocalDateTime updatedAt){
            this.id = id;
             this.name = name;
             this.email = email;

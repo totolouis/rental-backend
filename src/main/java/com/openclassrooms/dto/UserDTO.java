@@ -1,11 +1,11 @@
 package com.openclassrooms.dto;
 
-public class User {
+public class UserDTO {
     private String name;
     private String email;
     private Integer id;
 
-    public User(Integer id, String name, String email){
+    public UserDTO(Integer id, String name, String email){
         this.id = id;
         this.name = name;
         this.email = email;

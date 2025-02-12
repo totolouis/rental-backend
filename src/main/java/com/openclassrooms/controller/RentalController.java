@@ -26,6 +26,9 @@ import com.openclassrooms.dto.RentalDTO;
 import com.openclassrooms.model.Rental;
 import com.openclassrooms.service.RentalService;
 
+import io.swagger.v3.oas.annotations.Operation;
+
+
 @RestController
 @RequestMapping("/api/rentals")
 public class RentalController {
@@ -38,20 +41,26 @@ public class RentalController {
         this.rentalService = rentalService;
     }
 
+    @Operation(summary = "Get all rentals")
     @GetMapping
     public ResponseEntity<?> getAllRentals() {
-        return ResponseEntity.ok(Map.of("rentals",rentalService.getAllRentals().stream()
-            .map(r -> new RentalDTO(r.getId(), r.getName(), r.getSurface(), r.getPrice(), r.getPicture(), r.getDescription(), r.getCreatedAt(), r.getUpdatedAt(), r.getOwnerId()))
-            .collect(Collectors.toList())));
+        return ResponseEntity.ok(Map.of("rentals", rentalService.getAllRentals().stream()
+                .map(r -> new RentalDTO(r.getId(), r.getName(), r.getSurface(), r.getPrice(), r.getPicture(),
+                        r.getDescription(), r.getCreatedAt(), r.getUpdatedAt(), r.getOwnerId()))
+                .collect(Collectors.toList())));
     }
 
+    @Operation(summary = "Get a rental by id")
     @GetMapping("/{id}")
     public ResponseEntity<RentalDTO> getRentalById(@PathVariable Long id) {
         Optional<Rental> rental = rentalService.getRentalById(id);
-        return rental.map(r -> ResponseEntity.ok(new RentalDTO(r.getId(), r.getName(), r.getSurface(), r.getPrice(), r.getPicture(), r.getDescription(), r.getCreatedAt(), r.getUpdatedAt(), r.getOwnerId())))
-                  .orElseGet(() -> ResponseEntity.notFound().build());
+        return rental
+                .map(r -> ResponseEntity.ok(new RentalDTO(r.getId(), r.getName(), r.getSurface(), r.getPrice(),
+                        r.getPicture(), r.getDescription(), r.getCreatedAt(), r.getUpdatedAt(), r.getOwnerId())))
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @Operation(summary = "Create a rental")
     @PostMapping
     public ResponseEntity<?> createRental(@RequestParam String name, @RequestParam Double surface,
             @RequestParam Double price, @RequestParam MultipartFile picture, @RequestParam String description) {
@@ -60,8 +69,6 @@ public class RentalController {
         Jwt jwt = (Jwt) authentication.getPrincipal();
 
         Integer ownerId = Math.toIntExact(jwt.getClaim("id"));
-        // I dont like the fact to give a null just to let the db use it. The
-        // constructor should be clearer, like no need to put the
 
         try {
             String filePath = this.getFilepathFromMultipartFile(picture);
@@ -87,6 +94,7 @@ public class RentalController {
         }
     }
 
+    @Operation(summary = "Update a rental")
     @PutMapping("/{id}")
     public ResponseEntity<?> updateRental(@PathVariable Long id, @RequestParam String name,
             @RequestParam Double surface,
@@ -114,7 +122,7 @@ public class RentalController {
 
     private String getFilepathFromMultipartFile(MultipartFile file) throws IOException {
         try {
-            if (file.getOriginalFilename().isEmpty()) {
+            if (file.getOriginalFilename() != null && file.getOriginalFilename().isEmpty()) {
                 return null;
             }
             Files.createDirectories(Paths.get(UPLOAD_DIR));

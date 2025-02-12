@@ -1,10 +1,9 @@
 package com.openclassrooms.dto;
 
-public class LoginRequest {
+public class LoginRequestDTO {
     private String email;
     private String password;
 
-    // Getters and setters
     public String getEmail() {
         return email;
     }

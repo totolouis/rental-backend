@@ -1,6 +1,6 @@
 package com.openclassrooms.dto;
 
-public class RegisterRequest extends LoginRequest {
+public class RegisterRequestDTO extends LoginRequestDTO {
     private String name;
 
     public String getName() {
