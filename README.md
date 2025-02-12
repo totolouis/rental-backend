@@ -8,6 +8,8 @@ This project is part of the Formation OpenClassroom Fullstack course. It focuses
 - [Features](#features)
 - [Installation](#installation)
 - [Usage](#usage)
+- [Swagger](#swagger)
+
 ## Introduction
 
 The Rental Project is a backend service designed to manage rental properties. It provides an API for interacting with the rental data.
@@ -40,6 +42,72 @@ To install and run the project locally, follow these steps:
     mvn spring-boot:run
     ```
 
+### Prepare the database
+
+A mysql db should run at localhost:3307.
+Init a database called `openclassroom` with username `root` and password `root` and execute the following script to create the db:
+
+```sql
+CREATE TABLE `users` (
+  `id` integer PRIMARY KEY AUTO_INCREMENT,
+  `email` varchar(255),
+  `name` varchar(255),
+  `password` varchar(255),
+  `created_at` timestamp,
+  `updated_at` timestamp
+);
+
+CREATE TABLE `rentals` (
+  `id` integer PRIMARY KEY AUTO_INCREMENT,
+  `name` varchar(255),
+  `surface` numeric,
+  `price` numeric,
+  `picture` varchar(255),
+  `description` varchar(2000),
+  `owner_id` integer NOT NULL,
+  `created_at` timestamp,
+  `updated_at` timestamp
+);
+
+CREATE TABLE `messages` (
+  `id` integer PRIMARY KEY AUTO_INCREMENT,
+  `rental_id` integer,
+  `user_id` integer,
+  `message` varchar(2000),
+  `created_at` timestamp,
+  `updated_at` timestamp
+);
+
+CREATE UNIQUE INDEX `USERS_index` ON `users` (`email`);
+
+ALTER TABLE `rentals` ADD FOREIGN KEY (`owner_id`) REFERENCES `users` (`id`);
+
+ALTER TABLE `messages` ADD FOREIGN KEY (`user_id`) REFERENCES `USusersERS` (`id`);
+
+ALTER TABLE `messages` ADD FOREIGN KEY (`rental_id`) REFERENCES `rentals` (`id`);
+
+```
+
+If you already have a db set up, you can change the db settings at your own convenience at `ressources/application.properties` if needed.
+
 ## Usage
 
 Once the application is running, you can access the API at `http://localhost:3001`. Use tools like Postman or cURL to interact with the endpoints.
+
+## Usage with the Frontend from OpenClassroom
+
+In order to save correctly the image and see them, you can put the frontend project in a folder called `frontend` just outside the backend. Something like that:
+
+```
+./sources
+   backend/
+       src/
+       ...
+   frontend/
+       src/
+       ...
+```
+
+## Swagger
+
+You can access the swagger here: http://localhost:3002/swagger-ui/index.html.

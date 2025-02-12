@@ -32,7 +32,8 @@ import io.swagger.v3.oas.annotations.Operation;
 @RestController
 @RequestMapping("/api/rentals")
 public class RentalController {
-    private static final String UPLOAD_DIR = "src\\frontend\\src\\assets\\";
+    // Needed to upload locally the images from the frontend
+    private static final String UPLOAD_DIR = "..\\frontend\\src\\assets\\";
     private static final String FRONTEND_DIR = "assets\\";
 
     private final RentalService rentalService;
