@@ -34,11 +34,7 @@ public class MessageController {
     @Operation(summary = "Create a message")
     @PostMapping
     public ResponseEntity<MessageSentDTO> createMessage(@RequestBody CreateMessageRequestDTO createMessageRequestDTO) {
-        Message newMessage = Message.builder()
-                .message(createMessageRequestDTO.message)
-                .userId(createMessageRequestDTO.user_id)
-                .rentalId(createMessageRequestDTO.rental_id)
-                .build();
+        Message newMessage = new Message(null, createMessageRequestDTO.rental_id, createMessageRequestDTO.user_id, createMessageRequestDTO.message, null, null);
         messageService.createMessage(newMessage);
         return ResponseEntity.ok(new MessageSentDTO(createMessageRequestDTO.message));
     }

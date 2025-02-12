@@ -76,14 +76,7 @@ public class RentalController {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Picture is missing");
             }
 
-            Rental rental = Rental.builder()
-                    .name(name)
-                    .surface(surface)
-                    .price(price)
-                    .description(description)
-                    .ownerId(ownerId)
-                    .picture(filePath)
-                    .build();
+            Rental rental = new Rental(null, name, surface, price, filePath, description, ownerId, null, null);
 
             rentalService.createRental(rental);
             saveFile(Paths.get(filePath), picture.getBytes());
@@ -104,13 +97,7 @@ public class RentalController {
         Jwt jwt = (Jwt) authentication.getPrincipal();
 
         Integer ownerId = Math.toIntExact(jwt.getClaim("id"));
-        Rental rental = Rental.builder()
-                .name(name)
-                .surface(surface)
-                .price(price)
-                .description(description)
-                .ownerId(ownerId)
-                .build();
+        Rental rental = new Rental(id, name, surface, price, null, description, ownerId, null, null);
         Optional<Rental> updatedRental = rentalService.updateRental(id, rental);
         if (updatedRental.isPresent()) {
 
