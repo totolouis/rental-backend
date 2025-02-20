@@ -1,14 +1,25 @@
+TODO:
+- [ ] var env pour les secrets (app properties & jwt token dans security)
+- [ ] Global exception handler pour gerer les exceptions (comme ca on renvoit automatiquement les exception depuis les controllers avec les ResponseEntity)
+- [ ] Utiliser les mappers pour transformer Entity en DTO et inversement
+- [ ] Faire renvoyer les DTO directement depuis les controllers et ainsi Migrer la logique des controllers dans les services
+- [ ] Config swagger pour piuvoir mettre le token jwt et ainsi faire des query protected.
+
 # Rental Project
 
 This project is part of the Formation OpenClassroom Fullstack course. It focuses on building a backend for a rental service.
 
 ## Table of Contents
 
-- [Introduction](#introduction)
-- [Features](#features)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Swagger](#swagger)
+- [Rental Project](#rental-project)
+  - [Table of Contents](#table-of-contents)
+  - [Introduction](#introduction)
+  - [Features](#features)
+  - [Installation](#installation)
+    - [Prepare the database](#prepare-the-database)
+  - [Usage](#usage)
+  - [Usage with the Frontend from OpenClassroom](#usage-with-the-frontend-from-openclassroom)
+  - [Swagger](#swagger)
 
 ## Introduction
 
