@@ -20,6 +20,16 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Rental {
+
+    public Rental(Long id, String name, Double surface, Double price, String description, Integer ownerId) {
+        this.id = id;
+        this.name = name;
+        this.surface = surface;
+        this.price = price;
+        this.description = description;
+        this.ownerId = ownerId;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -39,13 +49,13 @@ public class Rental {
     @Column(nullable = true)
     private String description;
 
-    @Column(nullable = false, name= "owner_id")
+    @Column(nullable = false, name = "owner_id")
     private Integer ownerId;
-    
-    @Column(nullable = true, name= "created_at")
+
+    @Column(nullable = true, name = "created_at")
     private LocalDateTime createdAt;
-    
-    @Column(nullable = true, name= "updated_at")
+
+    @Column(nullable = true, name = "updated_at")
     private LocalDateTime updatedAt;
 
     @PrePersist
@@ -83,7 +93,7 @@ public class Rental {
         return description;
     }
 
-    public Integer getOwnerId(){
+    public Integer getOwnerId() {
         return ownerId;
     }
 
