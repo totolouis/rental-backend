@@ -2,6 +2,7 @@ package com.openclassrooms.configuration;
 
 import javax.crypto.spec.SecretKeySpec;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -23,7 +24,8 @@ import com.nimbusds.jose.jwk.source.ImmutableSecret;
 @EnableWebSecurity
 public class SpringSecurityConfig {
 
-	private String jwtKey = "04NFj2KQB0FzrdKdbjRn4y4mSKaTXzR2";
+	@Value("${OC_JWT_KEY}")
+	private String jwtKey;
 
 	public SpringSecurityConfig() {
 	}
