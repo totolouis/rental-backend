@@ -50,10 +50,7 @@ public class RentalService {
 
     public RentalDTO createRental(String name, Double surface, Double price, MultipartFile picture, String description,
             Integer ownerId) throws GetFilePathException, SaveFileException, IOException {
-        String filePath = this.getFilepathFromMultipartFile(picture);
-        if (filePath == null) {
-            throw new GetFilePathException("Error getting filePath.");
-        }
+        String filePath = getFilePath(picture);
 
         Rental rental = new Rental(null, name, surface, price, filePath, description, ownerId, null, null);
 
@@ -74,6 +71,14 @@ public class RentalService {
             // TODO: do a better exception
             throw new UserAlreadyExistsException("Owner id does not match.");
         }
+    }
+
+    private String getFilePath(MultipartFile picture) throws GetFilePathException {
+        String filePath = this.getFilepathFromMultipartFile(picture);
+        if (filePath == null) {
+            throw new GetFilePathException("Error getting filePath.");
+        }
+        return filePath;
     }
 
     private String getFilepathFromMultipartFile(MultipartFile file) throws GetFilePathException {
