@@ -4,6 +4,8 @@ import com.openclassrooms.dto.RentalDTO;
 import com.openclassrooms.model.Rental;
 import com.openclassrooms.service.RentalService;
 import io.swagger.v3.oas.annotations.Operation;
+
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -20,9 +22,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-
-
-
 @RestController
 @RequestMapping("/api/rentals")
 public class RentalController {
@@ -35,26 +34,20 @@ public class RentalController {
 
     @Operation(summary = "Get all rentals")
     @GetMapping
-    public ResponseEntity<?> getAllRentals() {
-        return ResponseEntity.ok(Map.of("rentals", rentalService.getAllRentals().stream()
-                .map(r -> new RentalDTO(r.getId(), r.getName(), r.getSurface(), r.getPrice(), r.getPicture(),
-                        r.getDescription(), r.getCreatedAt(), r.getUpdatedAt(), r.getOwnerId()))
-                .collect(Collectors.toList())));
+    public ResponseEntity<List<RentalDTO>> getAllRentals() {
+        return ResponseEntity.ok(rentalService.getAllRentals());
     }
 
     @Operation(summary = "Get a rental by id")
     @GetMapping("/{id}")
     public ResponseEntity<RentalDTO> getRentalById(@PathVariable Long id) {
-        Optional<Rental> rental = rentalService.getRentalById(id);
-        return rental
-                .map(r -> ResponseEntity.ok(new RentalDTO(r.getId(), r.getName(), r.getSurface(), r.getPrice(),
-                        r.getPicture(), r.getDescription(), r.getCreatedAt(), r.getUpdatedAt(), r.getOwnerId())))
-                .orElseGet(() -> ResponseEntity.notFound().build());
+        return ResponseEntity.ok(rentalService.getRentalById(id));
     }
 
     @Operation(summary = "Create a rental")
     @PostMapping
-    public ResponseEntity<RentalDTO> createRental(@RequestParam String name, @RequestParam Double surface,
+    public ResponseEntity<RentalDTO> createRental(@RequestParam String name,
+            @RequestParam Double surface,
             @RequestParam Double price, @RequestParam MultipartFile picture, @RequestParam String description) {
         Integer ownerId = getOwnerId();
 
