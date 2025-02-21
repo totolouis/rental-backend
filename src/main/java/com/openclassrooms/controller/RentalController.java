@@ -51,15 +51,16 @@ public class RentalController {
             @RequestParam Double price, @RequestParam MultipartFile picture, @RequestParam String description) {
         Integer ownerId = getOwnerId();
 
-        Rental savedRental = rentalService.createRental(name, surface, price, picture, description, ownerId);
+        // TODO": not uniform. giving dto to update and fields to create?
+        RentalDTO savedRental = rentalService.createRental(name, surface, price, picture, description, ownerId);
 
         // TODO: use a mapper instead
-        return ResponseEntity.ok(new RentalDTO(name, surface, price, savedRental.getPicture(), description));
+        return ResponseEntity.ok(savedRental);
     }
 
     @Operation(summary = "Update a rental")
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateRental(@PathVariable Long id, @RequestParam String name,
+    public ResponseEntity<RentalDTO> updateRental(@PathVariable Long id, @RequestParam String name,
             @RequestParam Double surface,
             @RequestParam Double price,
             @RequestParam String description) {
@@ -67,14 +68,9 @@ public class RentalController {
         Jwt jwt = (Jwt) authentication.getPrincipal();
 
         Integer ownerId = Math.toIntExact(jwt.getClaim("id"));
-        Rental rental = new Rental(id, name, surface, price, description, ownerId);
-        Optional<Rental> updatedRental = rentalService.updateRental(id, rental);
-        if (updatedRental.isPresent()) {
+        RentalDTO rentalDTO = new RentalDTO(id, name, surface, price, description, ownerId);
 
-            return ResponseEntity.ok(new RentalDTO(name, surface, price, name, description));
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        return ResponseEntity.ok(rentalService.updateRental(id, rentalDTO));
     }
 
     private Integer getOwnerId() {

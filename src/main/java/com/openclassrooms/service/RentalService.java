@@ -62,7 +62,6 @@ public class RentalService {
 
     public RentalDTO updateRental(Long id, RentalDTO updatedRental) {
         Rental newDataRental = modelMapper.map(updatedRental, Rental.class);
-
         Rental rental = rentalRepository.findById(id).get();
         if (rental.getOwnerId().equals(newDataRental.getOwnerId())) {
             return saveRentalToRepository(rental, newDataRental);

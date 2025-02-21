@@ -34,6 +34,15 @@ public class RentalDTO {
         this(null, name, surface, price, picture, description, null, null, null);
     }
 
+    public RentalDTO(Long id, String name, Double surface, Double price, String description, Integer ownerId) {
+        this.id = id;
+        this.name = name;
+        this.surface = surface;
+        this.price = price;
+        this.description = description;
+        this.ownerId = ownerId;
+    }
+
     public Long getId() {
         return id;
     }
