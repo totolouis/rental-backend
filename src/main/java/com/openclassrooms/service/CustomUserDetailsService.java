@@ -1,5 +1,7 @@
 package com.openclassrooms.service;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -8,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.openclassrooms.configuration.CustomUserDetails;
 import com.openclassrooms.model.User;
 import com.openclassrooms.repository.UserRepository;
+import com.openclassrooms.configuration.exceptions.*;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
@@ -34,8 +37,20 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     public CustomUserDetails loadUserById(Integer id) throws UsernameNotFoundException {
-        User user = userRepository.findById(Long.valueOf(id)).orElseThrow(() -> new UsernameNotFoundException("User not found for specified id"));
+        User user = userRepository.findById(Long.valueOf(id))
+                .orElseThrow(() -> new UsernameNotFoundException("User not found for specified id"));
         return new CustomUserDetails(user);
+    }
+
+    public User registerUser(User user) {
+        checkIfEmailIsTaken(user.getEmail());
+        return userRepository.save(user);
+    }
+
+    private void checkIfEmailIsTaken(String email) {
+        if (this.userRepository.findByEmail(email).isPresent()) {
+            throw new UserAlreadyExistsException("Email already taken");
+        }
     }
 
 }

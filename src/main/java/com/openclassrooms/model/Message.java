@@ -19,6 +19,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Message {
 
+    public Message(Integer rentalId, Integer userId, String message) {
+        this.rentalId = rentalId;
+        this.userId = userId;
+        this.message = message;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -38,7 +44,7 @@ public class Message {
     @Column(nullable = true, name = "updated_at")
     private LocalDateTime updatedAt;
 
-        @PrePersist
+    @PrePersist
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();
     }
@@ -64,15 +70,15 @@ public class Message {
         return this.message;
     }
 
-    public void setRentalId(Integer rentalId){
+    public void setRentalId(Integer rentalId) {
         this.rentalId = rentalId;
     }
 
-    public void setUserId(Integer userId){
+    public void setUserId(Integer userId) {
         this.userId = userId;
     }
 
-    public void setMessage(String message){
+    public void setMessage(String message) {
         this.message = message;
     }
 }

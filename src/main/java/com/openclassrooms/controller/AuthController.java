@@ -18,7 +18,6 @@ import com.openclassrooms.dto.LoginRequestDTO;
 import com.openclassrooms.dto.RegisterRequestDTO;
 import com.openclassrooms.dto.UserMeDTO;
 import com.openclassrooms.model.User;
-import com.openclassrooms.repository.UserRepository;
 import com.openclassrooms.service.CustomUserDetailsService;
 import com.openclassrooms.service.JWTService;
 
@@ -30,14 +29,12 @@ public class AuthController {
 
 	private JWTService jwtService;
 	private final CustomUserDetailsService userService;
-	private final UserRepository userRepository;
 	private final BCryptPasswordEncoder passwordEncoder;
 
-	public AuthController(JWTService jwtService, CustomUserDetailsService userService, UserRepository userRepository,
+	public AuthController(JWTService jwtService, CustomUserDetailsService userService,
 			BCryptPasswordEncoder passwordEncoder) {
 		this.jwtService = jwtService;
 		this.userService = userService;
-		this.userRepository = userRepository;
 		this.passwordEncoder = passwordEncoder;
 	}
 
@@ -69,11 +66,7 @@ public class AuthController {
 
 	@Operation(summary = "Register a new user")
 	@PostMapping("/register")
-	public ResponseEntity<?> registerUser(@RequestBody RegisterRequestDTO registerRequest) {
-		if (this.userRepository.findByEmail(registerRequest.getEmail()).isPresent()) {
-			return ResponseEntity.status(HttpStatus.CONFLICT).body("User already exists.");
-		}
-
+	public ResponseEntity<AuthSuccessDTO> registerUser(@RequestBody RegisterRequestDTO registerRequest) {
 		User newUser = createUser(registerRequest);
 		AuthSuccessDTO authSuccess = createToken(newUser);
 
@@ -84,8 +77,8 @@ public class AuthController {
 		String encryptedPassword = this.passwordEncoder.encode(registerRequest.getPassword());
 		User newUser = new User(null, registerRequest.getEmail(), registerRequest.getName(), encryptedPassword, null,
 				null);
-		userRepository.save(newUser);
-		return newUser;
+		User savedUser = this.userService.registerUser(newUser);
+		return savedUser;
 	}
 
 	private AuthSuccessDTO createToken(User newUser) {

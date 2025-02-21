@@ -1,5 +1,9 @@
 package com.openclassrooms.service;
 
+import com.openclassrooms.configuration.exceptions.GetFilePathException;
+import com.openclassrooms.configuration.exceptions.SaveFileException;
+import com.openclassrooms.model.Rental;
+import com.openclassrooms.repository.RentalRepository;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -7,14 +11,10 @@ import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.openclassrooms.configuration.exceptions.GetFilePathException;
-import com.openclassrooms.configuration.exceptions.SaveFileException;
-import com.openclassrooms.model.Rental;
-import com.openclassrooms.repository.RentalRepository;
+
 
 @Service
 public class RentalService {
