@@ -37,9 +37,8 @@ public class RentalService {
 
     public List<RentalDTO> getAllRentals() {
         List<Rental> rentals = (List<Rental>) rentalRepository.findAll();
-        List<RentalDTO> rentalDTOs = rentals.stream().map(rental -> modelMapper.map(rental, RentalDTO.class))
-                .collect(Collectors.toList());
-        return rentalDTOs;
+
+        return rentals.stream().map(rental -> modelMapper.map(rental, RentalDTO.class)).toList();
     }
 
     public RentalDTO getRentalById(Long id) {
