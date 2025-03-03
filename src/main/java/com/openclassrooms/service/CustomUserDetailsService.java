@@ -43,9 +43,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         UserMapper mapper = Mappers.getMapper(UserMapper.class);
         User user = userRepository.findById(Long.valueOf(id))
                 .orElseThrow(() -> new UsernameNotFoundException("User not found for specified id"));
-//        CustomUserDetails user2 = new CustomUserDetails(user);
         return mapper.fromUser(user);
-//        return modelMapper.map(user2, UserDTO.class);
     }
 
     public UserDTO registerUser(UserDTO userDTO) {
@@ -53,7 +51,6 @@ public class CustomUserDetailsService implements UserDetailsService {
         User user = mapper.toUser(userDTO);
         checkIfEmailIsTaken(user.getEmail());
         User savedUser = userRepository.save(user);
-        //TODO: le mapper NE FONCTIONNE TOUJOURS PAS
         return mapper.fromUser(savedUser);
     }
 

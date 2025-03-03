@@ -68,7 +68,6 @@ public class RentalService {
         if (rental.getOwnerId().equals(newDataRental.getOwnerId())) {
             return saveRentalToRepository(rental, newDataRental);
         } else {
-            // TODO: do a better exception
             throw new UserAlreadyExistsException("Owner id does not match.");
         }
     }
