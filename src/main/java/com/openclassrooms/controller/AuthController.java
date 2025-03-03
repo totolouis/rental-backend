@@ -78,7 +78,6 @@ public class AuthController {
 	private UserDTO createUser(RegisterRequestDTO registerRequest) {
 		String encryptedPassword = this.passwordEncoder.encode(registerRequest.getPassword());
 		UserDTO userDTO = new UserDTO(registerRequest.getName(), registerRequest.getEmail(), encryptedPassword);
-
 		UserDTO savedUser = this.userService.registerUser(userDTO);
 		return savedUser;
 	}

@@ -8,6 +8,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.openclassrooms.mapper.RentalMapper;
+import com.openclassrooms.mapper.UserMapper;
+import org.mapstruct.factory.Mappers;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,9 +29,6 @@ public class RentalService {
     private static final String UPLOAD_DIR = "..\\frontend\\src\\assets\\";
     private static final String FRONTEND_DIR = "assets\\";
 
-    @Autowired
-    private ModelMapper modelMapper;
-
     private final RentalRepository rentalRepository;
 
     public RentalService(RentalRepository rentalRepository) {
@@ -36,31 +36,34 @@ public class RentalService {
     }
 
     public List<RentalDTO> getAllRentals() {
+        RentalMapper mapper = Mappers.getMapper(RentalMapper.class);
         List<Rental> rentals = (List<Rental>) rentalRepository.findAll();
 
-        return rentals.stream().map(rental -> modelMapper.map(rental, RentalDTO.class)).toList();
+        return rentals.stream().map(mapper::fromRental).toList();
     }
 
     public RentalDTO getRentalById(Long id) {
+        RentalMapper mapper = Mappers.getMapper(RentalMapper.class);
         Rental rental = rentalRepository.findById(id).get();
-        RentalDTO rentalDTO = modelMapper.map(rental, RentalDTO.class);
-        return rentalDTO;
+        return mapper.fromRental(rental);
     }
 
     public RentalDTO createRental(String name, Double surface, Double price, MultipartFile picture, String description,
-            Integer ownerId) throws GetFilePathException, SaveFileException, IOException {
+                                  Integer ownerId) throws GetFilePathException, SaveFileException, IOException {
+        RentalMapper mapper = Mappers.getMapper(RentalMapper.class);
         String filePath = getFilePath(picture);
 
         RentalDTO rentalDTO = new RentalDTO(name, surface, price, filePath, description, ownerId);
 
-        Rental newEntity = rentalRepository.save(modelMapper.map(rentalDTO, Rental.class));
+        Rental newEntity = rentalRepository.save(mapper.toRental(rentalDTO));
         saveFile(Paths.get(filePath), picture.getBytes());
 
-        return modelMapper.map(newEntity, RentalDTO.class);
+        return mapper.fromRental(newEntity);
     }
 
     public RentalDTO updateRental(Long id, RentalDTO updatedRental) {
-        Rental newDataRental = modelMapper.map(updatedRental, Rental.class);
+        RentalMapper mapper = Mappers.getMapper(RentalMapper.class);
+        Rental newDataRental = mapper.toRental(updatedRental);
         Rental rental = rentalRepository.findById(id).get();
         if (rental.getOwnerId().equals(newDataRental.getOwnerId())) {
             return saveRentalToRepository(rental, newDataRental);
@@ -102,6 +105,7 @@ public class RentalService {
     }
 
     private RentalDTO saveRentalToRepository(Rental oldRental, Rental newDataRental) {
+        RentalMapper mapper = Mappers.getMapper(RentalMapper.class);
         if (newDataRental.getName() != null) {
             oldRental.setName(newDataRental.getName());
         }
@@ -118,7 +122,7 @@ public class RentalService {
             oldRental.setDescription(newDataRental.getDescription());
         }
         oldRental.setUpdatedAt(LocalDateTime.now());
-        return modelMapper.map(rentalRepository.save(oldRental), RentalDTO.class);
+        return mapper.fromRental(rentalRepository.save(oldRental));
     }
 
 }

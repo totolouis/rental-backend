@@ -26,7 +26,7 @@ public class User {
     @Column(nullable = true)
     private String email;
 
-    @Column(nullable = true, name = "name")
+    @Column(nullable = true)
     private String username;
 
     @Column(nullable = true)
@@ -47,6 +47,16 @@ public class User {
     @PreUpdate
     protected void onUpdate() {
         this.updatedAt = LocalDateTime.now();
+    }
+
+    public void setEmail(String email){
+        this.email = email;
+    }
+    public void setUsername(String username){
+        this.username = username;
+    }
+    public void setPassword(String password){
+        this.password = password;
     }
 
     public String getEmail() {

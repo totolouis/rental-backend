@@ -10,12 +10,15 @@ import lombok.Setter;
 @Setter
 @Getter
 @AllArgsConstructor
-@NoArgsConstructor
 public class UserDTO {
     private Integer id;
     private String email;
     private String username;
     private String password;
+
+    public UserDTO() {
+
+    }
 
     public UserDTO(String username, String email, String encryptedPassword) {
         this.username = username;
@@ -43,4 +46,17 @@ public class UserDTO {
     public String getPassword() {
         return password;
     }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
 }

@@ -15,9 +15,10 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "MESSAGES")
-@NoArgsConstructor
 @AllArgsConstructor
 public class Message {
+
+    public Message(){}
 
     public Message(Integer rentalId, Integer userId, String message) {
         this.rentalId = rentalId;

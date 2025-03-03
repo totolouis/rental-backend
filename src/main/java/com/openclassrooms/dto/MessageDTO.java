@@ -8,6 +8,8 @@ public class MessageDTO {
     private Integer rentalId;
     private Integer userId;
 
+    public MessageDTO(){}
+
     public MessageDTO(String message) {
         this.message = message;
     }
@@ -22,5 +24,15 @@ public class MessageDTO {
 
     public Integer getUserId() {
         return userId;
+    }
+
+    public void setMessage(String message){
+        this.message = message;
+    }
+    public void setRentalId(Integer rentalId){
+        this.rentalId = rentalId;
+    }
+    public void setUserId(Integer userId){
+        this.userId = userId;
     }
 }

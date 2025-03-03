@@ -17,9 +17,12 @@ import lombok.Setter;
 @Entity
 @Table(name = "RENTALS")
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
 public class Rental {
+
+    public Rental(){
+
+    }
 
     public Rental(Long id, String name, Double surface, Double price, String description, Integer ownerId) {
         this.id = id;
@@ -135,5 +138,9 @@ public class Rental {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public void setOwnerId(Integer ownerId){
+        this.ownerId = ownerId;
     }
 }

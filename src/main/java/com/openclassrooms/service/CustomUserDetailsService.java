@@ -1,9 +1,9 @@
 package com.openclassrooms.service;
 
+import com.openclassrooms.mapper.UserMapper;
+import org.mapstruct.factory.Mappers;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -19,9 +19,6 @@ import com.openclassrooms.dto.UserDTO;
 public class CustomUserDetailsService implements UserDetailsService {
 
     private final UserRepository userRepository;
-
-    @Autowired
-    private ModelMapper modelMapper;
 
     public CustomUserDetailsService(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -43,17 +40,21 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     public UserDTO loadUserById(Integer id) throws UsernameNotFoundException {
+        UserMapper mapper = Mappers.getMapper(UserMapper.class);
         User user = userRepository.findById(Long.valueOf(id))
                 .orElseThrow(() -> new UsernameNotFoundException("User not found for specified id"));
-        CustomUserDetails user2 = new CustomUserDetails(user);
-        return modelMapper.map(user2, UserDTO.class);
+//        CustomUserDetails user2 = new CustomUserDetails(user);
+        return mapper.fromUser(user);
+//        return modelMapper.map(user2, UserDTO.class);
     }
 
     public UserDTO registerUser(UserDTO userDTO) {
-        User user = modelMapper.map(userDTO, User.class);
+        UserMapper mapper = Mappers.getMapper(UserMapper.class);
+        User user = mapper.toUser(userDTO);
         checkIfEmailIsTaken(user.getEmail());
         User savedUser = userRepository.save(user);
-        return modelMapper.map(savedUser, UserDTO.class);
+        //TODO: le mapper NE FONCTIONNE TOUJOURS PAS
+        return mapper.fromUser(savedUser);
     }
 
     private void checkIfEmailIsTaken(String email) {

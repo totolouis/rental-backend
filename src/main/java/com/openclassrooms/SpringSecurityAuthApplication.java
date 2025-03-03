@@ -22,10 +22,4 @@ public class SpringSecurityAuthApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(SpringSecurityAuthApplication.class, args);
 	}
-
-	// TODO: voir mapstruct si tjr pas automatique.
-	@Bean
-	public ModelMapper getModelMapper() {
-		return new ModelMapper();
-	}
 }

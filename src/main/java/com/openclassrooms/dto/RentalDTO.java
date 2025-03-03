@@ -13,6 +13,10 @@ public class RentalDTO {
     private LocalDateTime updatedAt;
     private Integer ownerId;
 
+    public RentalDTO(){
+
+    }
+
     public RentalDTO(Long id, String name, Double surface, Double price, String picture, String description,
             LocalDateTime createdAt, LocalDateTime updatedAt, Integer ownerId) {
         this.id = id;
@@ -77,5 +81,33 @@ public class RentalDTO {
 
     public Integer getOwnerId() {
         return ownerId;
+    }
+
+    public void setName(String name){
+        this.name = name;
+    }
+    public void setSurface(Double surface){
+        this.surface = surface;
+    }
+    public void setPrice(Double price){
+        this.price = price;
+    }
+    public void setPicture(String picture){
+        this.picture = picture;
+    }
+    public void setDescription(String description){
+        this.description = description;
+    }
+    public void setCreatedAt(LocalDateTime createdAt){
+        this.createdAt = createdAt;
+    }
+    public void setUpdatedAt(LocalDateTime updatedAt){
+        this.updatedAt = updatedAt;
+    }
+    public void setId(Long id){
+        this.id = id;
+    }
+    public void setOwnerId(Integer ownerId){
+        this.ownerId = ownerId;
     }
 }
