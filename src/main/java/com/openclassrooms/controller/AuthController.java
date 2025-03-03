@@ -16,8 +16,8 @@ import com.openclassrooms.configuration.CustomUserDetails;
 import com.openclassrooms.dto.AuthSuccessDTO;
 import com.openclassrooms.dto.LoginRequestDTO;
 import com.openclassrooms.dto.RegisterRequestDTO;
+import com.openclassrooms.dto.UserDTO;
 import com.openclassrooms.dto.UserMeDTO;
-import com.openclassrooms.model.User;
 import com.openclassrooms.service.CustomUserDetailsService;
 import com.openclassrooms.service.JWTService;
 
@@ -49,39 +49,41 @@ public class AuthController {
 
 	@Operation(summary = "Return authenticated user information")
 	@GetMapping("/me")
-	public ResponseEntity<UserMeDTO> getCurrentUser() {
+	public ResponseEntity<UserDTO> getCurrentUser() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (!(authentication.getPrincipal() instanceof Jwt)) {
 			return ResponseEntity.internalServerError().build();
 		}
 		Jwt jwt = (Jwt) authentication.getPrincipal();
 		Integer id = Math.toIntExact(jwt.getClaim("id"));
-		CustomUserDetails user = userService.loadUserById(id);
+		// TODO: deal with DTO
+		UserDTO user = userService.loadUserById(id);
 
-		UserMeDTO userInfo = new UserMeDTO(id, user.getUsername(), user.getEmail(), user.getCreatedDateTime(),
-				user.getUpdatedDateTime());
+		// UserMeDTO userInfo = new UserMeDTO(id, user.getUsername(), user.getEmail(),
+		// user.getCreatedDateTime(),
+		// user.getUpdatedDateTime());
 
-		return ResponseEntity.ok(userInfo);
+		return ResponseEntity.ok(user);
 	}
 
 	@Operation(summary = "Register a new user")
 	@PostMapping("/register")
 	public ResponseEntity<AuthSuccessDTO> registerUser(@RequestBody RegisterRequestDTO registerRequest) {
-		User newUser = createUser(registerRequest);
+		UserDTO newUser = createUser(registerRequest);
 		AuthSuccessDTO authSuccess = createToken(newUser);
 
 		return ResponseEntity.status(HttpStatus.CREATED).body(authSuccess);
 	}
 
-	private User createUser(RegisterRequestDTO registerRequest) {
+	private UserDTO createUser(RegisterRequestDTO registerRequest) {
 		String encryptedPassword = this.passwordEncoder.encode(registerRequest.getPassword());
-		User newUser = new User(null, registerRequest.getEmail(), registerRequest.getName(), encryptedPassword, null,
-				null);
-		User savedUser = this.userService.registerUser(newUser);
+		UserDTO userDTO = new UserDTO(registerRequest.getName(), registerRequest.getEmail(), encryptedPassword);
+
+		UserDTO savedUser = this.userService.registerUser(userDTO);
 		return savedUser;
 	}
 
-	private AuthSuccessDTO createToken(User newUser) {
+	private AuthSuccessDTO createToken(UserDTO newUser) {
 		String token = jwtService.generateToken(newUser.getEmail(), newUser.getPassword());
 		AuthSuccessDTO authSuccess = new AuthSuccessDTO();
 		authSuccess.setToken(token);

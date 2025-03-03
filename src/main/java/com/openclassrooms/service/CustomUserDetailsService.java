@@ -1,5 +1,7 @@
 package com.openclassrooms.service;
 
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,11 +13,15 @@ import com.openclassrooms.configuration.CustomUserDetails;
 import com.openclassrooms.model.User;
 import com.openclassrooms.repository.UserRepository;
 import com.openclassrooms.configuration.exceptions.*;
+import com.openclassrooms.dto.UserDTO;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
     private final UserRepository userRepository;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     public CustomUserDetailsService(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -36,15 +42,18 @@ public class CustomUserDetailsService implements UserDetailsService {
         return new CustomUserDetails(user);
     }
 
-    public CustomUserDetails loadUserById(Integer id) throws UsernameNotFoundException {
+    public UserDTO loadUserById(Integer id) throws UsernameNotFoundException {
         User user = userRepository.findById(Long.valueOf(id))
                 .orElseThrow(() -> new UsernameNotFoundException("User not found for specified id"));
-        return new CustomUserDetails(user);
+        CustomUserDetails user2 = new CustomUserDetails(user);
+        return modelMapper.map(user2, UserDTO.class);
     }
 
-    public User registerUser(User user) {
+    public UserDTO registerUser(UserDTO userDTO) {
+        User user = modelMapper.map(userDTO, User.class);
         checkIfEmailIsTaken(user.getEmail());
-        return userRepository.save(user);
+        User savedUser = userRepository.save(user);
+        return modelMapper.map(savedUser, UserDTO.class);
     }
 
     private void checkIfEmailIsTaken(String email) {

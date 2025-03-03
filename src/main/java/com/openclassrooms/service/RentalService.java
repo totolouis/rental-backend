@@ -51,13 +51,12 @@ public class RentalService {
             Integer ownerId) throws GetFilePathException, SaveFileException, IOException {
         String filePath = getFilePath(picture);
 
-        Rental rental = new Rental(null, name, surface, price, filePath, description, ownerId, null, null);
+        RentalDTO rentalDTO = new RentalDTO(name, surface, price, filePath, description, ownerId);
 
-        Rental newEntity = rentalRepository.save(rental);
+        Rental newEntity = rentalRepository.save(modelMapper.map(rentalDTO, Rental.class));
         saveFile(Paths.get(filePath), picture.getBytes());
 
-        RentalDTO rentalDTO = modelMapper.map(newEntity, RentalDTO.class);
-        return rentalDTO;
+        return modelMapper.map(newEntity, RentalDTO.class);
     }
 
     public RentalDTO updateRental(Long id, RentalDTO updatedRental) {

@@ -1,9 +1,12 @@
 TODO:
-- [ ] var env pour les secrets (app properties & jwt token dans security)
-- [ ] Global exception handler pour gerer les exceptions (comme ca on renvoit automatiquement les exception depuis les controllers avec les ResponseEntity)
-- [ ] Utiliser les mappers pour transformer Entity en DTO et inversement
+- [x] var env pour les secrets (app properties & jwt token dans security)
+- [x] Global exception handler pour gerer les exceptions (comme ca on renvoit automatiquement les exception depuis les controllers avec les ResponseEntity) -  DONE. Need to add more exceptions on the way
+- [ ] Utiliser les mappers pour transformer Entity en DTO et inversement - in progress
 - [ ] Faire renvoyer les DTO directement depuis les controllers et ainsi Migrer la logique des controllers dans les services
-- [ ] Config swagger pour piuvoir mettre le token jwt et ainsi faire des query protected.
+- [ ] Config swagger pour piuvoir mettre le token jwt et ainsi faire des query protected. (file openapi.cs)
+  - [ ] Faire un fichier de config Swagger
+  - [ ] https://www.baeldung.com/spring-boot-swagger-jwt
+  - [ ] 
 
 # Rental Project
 
@@ -52,6 +55,11 @@ To install and run the project locally, follow these steps:
     ```bash
     mvn spring-boot:run
     ```
+
+On Macosx, use:
+`mvn spring-boot:run -Dspring-boot.run.jvmArguments="-DOC_MYSQL_USER='' -DOC_MYSQL_PWD='' -DOC_JWT_KEY=''"`
+
+Access swagger here: `http://[LINK]/swagger-ui/index.html`
 
 ### Prepare the database
 

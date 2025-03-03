@@ -1,10 +1,15 @@
 package com.openclassrooms.controller;
 
+import com.openclassrooms.configuration.exceptions.GetFilePathException;
+import com.openclassrooms.configuration.exceptions.SaveFileException;
 import com.openclassrooms.dto.RentalDTO;
 import com.openclassrooms.model.Rental;
 import com.openclassrooms.service.RentalService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -24,6 +29,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api/rentals")
+@SecurityRequirement(name = "bearerAuth")
 public class RentalController {
 
     private final RentalService rentalService;
@@ -52,7 +58,20 @@ public class RentalController {
         Integer ownerId = getOwnerId();
 
         // TODO": not uniform. giving dto to update and fields to create?
-        RentalDTO savedRental = rentalService.createRental(name, surface, price, picture, description, ownerId);
+        // CHANGE IT. OMG CA MENERVE QUE LE GLOBAL NE MARHCE PAS
+        RentalDTO savedRental = null;
+        try {
+            savedRental = rentalService.createRental(name, surface, price, picture, description, ownerId);
+        } catch (GetFilePathException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (SaveFileException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
         // TODO: use a mapper instead
         return ResponseEntity.ok(savedRental);

@@ -22,9 +22,8 @@ public class UserController {
 
     @GetMapping("/{userId}")
     public ResponseEntity<UserDTO> getUser(@PathVariable Long userId) {
-        CustomUserDetails user = customUserDetailsService.loadUserById(Math.toIntExact(userId));
-        UserDTO userDTO = new UserDTO(user.getId(), user.getUsername(), user.getEmail());
-        return ResponseEntity.ok(userDTO);
+        UserDTO user = customUserDetailsService.loadUserById(Math.toIntExact(userId));
+        return ResponseEntity.ok(user);
     }
 
 }

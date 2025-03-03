@@ -1,25 +1,46 @@
 package com.openclassrooms.dto;
 
-public class UserDTO {
-    private String name;
-    private String email;
-    private Integer id;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-    public UserDTO(Integer id, String name, String email){
-        this.id = id;
-        this.name = name;
+@Data
+@Setter
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
+public class UserDTO {
+    private Integer id;
+    private String email;
+    private String username;
+    private String password;
+
+    public UserDTO(String username, String email, String encryptedPassword) {
+        this.username = username;
+        this.email = email;
+        this.password = encryptedPassword;
+    }
+
+    public UserDTO(String username, String email) {
+        this.username = username;
         this.email = email;
     }
 
-    public String getName(){
-        return name;
+    public String getUsername() {
+        return username;
     }
 
-    public String getEmail(){
+    public String getEmail() {
         return email;
     }
 
-    public Integer getId(){
+    public Integer getId() {
         return id;
+    }
+
+    public String getPassword() {
+        return password;
     }
 }

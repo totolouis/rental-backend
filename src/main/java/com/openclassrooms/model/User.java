@@ -26,19 +26,19 @@ public class User {
     @Column(nullable = true)
     private String email;
 
-    @Column(nullable = true)
+    @Column(nullable = true, name = "name")
     private String username;
 
     @Column(nullable = true)
     private String password;
 
-    @Column(nullable = true, name= "created_at")
+    @Column(nullable = true, name = "created_at")
     private LocalDateTime createdAt;
-    
-    @Column(nullable = true, name= "updated_at")
+
+    @Column(nullable = true, name = "updated_at")
     private LocalDateTime updatedAt;
 
-        @PrePersist
+    @PrePersist
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();
         this.updatedAt = this.createdAt;
@@ -48,17 +48,16 @@ public class User {
     protected void onUpdate() {
         this.updatedAt = LocalDateTime.now();
     }
-    
 
-    public String getEmail(){
+    public String getEmail() {
         return this.email;
     }
 
-    public String getUsername(){
+    public String getUsername() {
         return this.username;
     }
 
-    public String getPassword(){
+    public String getPassword() {
         return this.password;
     }
 
