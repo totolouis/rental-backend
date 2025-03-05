@@ -40,8 +40,11 @@ public class RentalController {
 
     @Operation(summary = "Get all rentals")
     @GetMapping
-    public ResponseEntity<List<RentalDTO>> getAllRentals() {
-        return ResponseEntity.ok(rentalService.getAllRentals());
+    public ResponseEntity<Map<String, Object>>
+ getAllRentals() {
+        List<RentalDTO> rentals = rentalService.getAllRentals();
+        return ResponseEntity.ok(Map.of("rentals", rentals));
+
     }
 
     @Operation(summary = "Get a rental by id")

@@ -3,8 +3,9 @@ package com.openclassrooms.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.time.LocalDateTime;
 
 @Data
 @Setter
@@ -13,26 +14,28 @@ import lombok.Setter;
 public class UserDTO {
     private Integer id;
     private String email;
-    private String username;
+    private String name;
     private String password;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
     public UserDTO() {
 
     }
 
     public UserDTO(String username, String email, String encryptedPassword) {
-        this.username = username;
+        this.name = username;
         this.email = email;
         this.password = encryptedPassword;
     }
 
     public UserDTO(String username, String email) {
-        this.username = username;
+        this.name = username;
         this.email = email;
     }
 
-    public String getUsername() {
-        return username;
+    public String getName() {
+        return name;
     }
 
     public String getEmail() {
@@ -47,8 +50,16 @@ public class UserDTO {
         return password;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public LocalDateTime getCreatedAt(){
+        return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt(){
+        return updatedAt;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public void setEmail(String email) {
@@ -59,4 +70,15 @@ public class UserDTO {
         this.password = password;
     }
 
+    public void setId(Integer id){
+        this.id = id;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt){
+        this.createdAt = createdAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt){
+        this.updatedAt = updatedAt;
+    }
 }

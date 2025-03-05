@@ -12,12 +12,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.openclassrooms.configuration.CustomUserDetails;
 import com.openclassrooms.dto.AuthSuccessDTO;
 import com.openclassrooms.dto.LoginRequestDTO;
 import com.openclassrooms.dto.RegisterRequestDTO;
 import com.openclassrooms.dto.UserDTO;
-import com.openclassrooms.dto.UserMeDTO;
 import com.openclassrooms.service.CustomUserDetailsService;
 import com.openclassrooms.service.JWTService;
 
