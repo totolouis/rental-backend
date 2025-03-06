@@ -54,12 +54,7 @@ public class AuthController {
 		}
 		Jwt jwt = (Jwt) authentication.getPrincipal();
 		Integer id = Math.toIntExact(jwt.getClaim("id"));
-		// TODO: deal with DTO
 		UserDTO user = userService.loadUserById(id);
-
-		// UserMeDTO userInfo = new UserMeDTO(id, user.getUsername(), user.getEmail(),
-		// user.getCreatedDateTime(),
-		// user.getUpdatedDateTime());
 
 		return ResponseEntity.ok(user);
 	}

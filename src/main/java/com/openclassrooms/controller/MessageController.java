@@ -31,8 +31,6 @@ public class MessageController {
         return ResponseEntity.ok(messageService.getAllMessages());
     }
 
-    // TODO: could do a check of existing user & rental in the service... will see
-    // if i got time
     @Operation(summary = "Create a message")
     @PostMapping
     public ResponseEntity<MessageDTO> createMessage(@RequestBody MessageDTO messageDTO) {
